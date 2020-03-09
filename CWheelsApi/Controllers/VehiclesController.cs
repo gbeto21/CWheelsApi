@@ -32,9 +32,13 @@ namespace CWheelsApi.Controllers
 
         // GET: api/Vehicles/5
         [HttpGet("{id}", Name = "Get")]
-        public Vehicle Get(int id)
+        public IActionResult Get(int id)
         {
-            return _cWheelDbContext.Vehicles.Find(id);
+            var vehicle = _cWheelDbContext.Vehicles.Find(id);
+            if (vehicle == null)
+                return NotFound();
+
+            return Ok(vehicle);
         }
 
         // POST: api/Vehicles
@@ -62,11 +66,15 @@ namespace CWheelsApi.Controllers
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
             var vehicle = _cWheelDbContext.Vehicles.Find(id);
+            if (vehicle == null)
+                return NotFound("No record fount agains this Id");
+
             _cWheelDbContext.Vehicles.Remove(vehicle);
             _cWheelDbContext.SaveChanges();
+            return Ok("Record deleted.");
         }
     }
 }
