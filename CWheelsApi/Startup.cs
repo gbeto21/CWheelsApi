@@ -28,6 +28,7 @@ namespace CWheelsApi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddMvc().AddXmlSerializerFormatters();
             services.AddDbContext<CWheelsDbContext>(option => option.UseSqlServer(@"Data Source=(localdb)\ProjectsV13; Initial Catalog=CWheelsDb;"));
         }
 
