@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AuthenticationPlugin;
 using CWheelsApi.DataBase;
 using CWheelsApi.Models;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,7 @@ namespace CWheelsApi.Controllers
             {
                 Name = user.Name,
                 Email = user.Email,
-                Password = user.Password,
+                Password = SecurePasswordHasherHelper.Hash(user.Password),
 
             };
 
