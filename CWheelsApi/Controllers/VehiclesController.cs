@@ -39,10 +39,11 @@ namespace CWheelsApi.Controllers
 
         // POST: api/Vehicles
         [HttpPost]
-        public void Post([FromBody] Vehicle vehicle)
+        public IActionResult Post([FromBody] Vehicle vehicle)
         {
             _cWheelDbContext.Vehicles.Add(vehicle);
             _cWheelDbContext.SaveChanges();
+            return StatusCode(StatusCodes.Status201Created);
         }
 
         // PUT: api/Vehicles/5
