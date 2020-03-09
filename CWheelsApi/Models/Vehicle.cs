@@ -13,5 +13,6 @@ namespace CWheelsApi.Models
 
         public double Price { get; set; }
 
+        public string Color { get; set; }
     }
 }

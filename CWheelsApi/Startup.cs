@@ -44,7 +44,7 @@ namespace CWheelsApi
 
             app.UseRouting();
 
-            cWheelDbContext.Database.EnsureCreated();
+            //cWheelDbContext.Database.EnsureCreated();
 
             app.UseAuthorization();
 
