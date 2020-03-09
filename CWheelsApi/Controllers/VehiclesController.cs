@@ -60,6 +60,7 @@ namespace CWheelsApi.Controllers
 
             entity.Title = vehicle.Title;
             entity.Price = vehicle.Price;
+            entity.Color = vehicle.Color;
             _cWheelDbContext.SaveChanges();
             return Ok("Record updated succesfully!!");
         }
