@@ -41,6 +41,13 @@ namespace CWheelsApi.Controllers
             return Ok(vehicle);
         }
 
+        //GET: api/vehicles/test/5
+        [HttpGet("[action]/{id}")]
+        public int Test(int id)
+        {
+            return id;
+        }
+
         // POST: api/Vehicles
         [HttpPost]
         public IActionResult Post([FromBody] Vehicle vehicle)
