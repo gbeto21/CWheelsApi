@@ -48,12 +48,16 @@ namespace CWheelsApi.Controllers
 
         // PUT: api/Vehicles/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Vehicle vehicle)
+        public IActionResult Put(int id, [FromBody] Vehicle vehicle)
         {
             var entity = _cWheelDbContext.Vehicles.Find(id);
+            if (entity == null)
+                return NotFound("No record found agais this Id");
+
             entity.Title = vehicle.Title;
             entity.Price = vehicle.Price;
             _cWheelDbContext.SaveChanges();
+            return Ok("Record updated succesfully!!");
         }
 
         // DELETE: api/ApiWithActions/5
