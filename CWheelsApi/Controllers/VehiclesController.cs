@@ -23,9 +23,11 @@ namespace CWheelsApi.Controllers
 
         // GET: api/Vehicles
         [HttpGet]
-        public IEnumerable<Vehicle> Get()
+        public IActionResult Get()
         {
-            return _cWheelDbContext.Vehicles;
+            return Ok(_cWheelDbContext.Vehicles);
+            //return StatusCode(200);
+            //return StatusCode(StatusCodes.Status451UnavailableForLegalReasons);
         }
 
         // GET: api/Vehicles/5
