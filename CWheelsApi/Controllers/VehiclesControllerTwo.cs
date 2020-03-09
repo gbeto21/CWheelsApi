@@ -11,12 +11,12 @@ namespace CWheelsApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class VehiclesController : ControllerBase
+    public class VehiclesControllerTwo : ControllerBase
     {
 
         private CWheelsDbContext _cWheelDbContext;
 
-        public VehiclesController(CWheelsDbContext cWheelDbContext)
+        public VehiclesControllerTwo(CWheelsDbContext cWheelDbContext)
         {
             _cWheelDbContext = cWheelDbContext;
         }
