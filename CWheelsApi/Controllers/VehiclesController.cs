@@ -138,5 +138,30 @@ namespace CWheelsApi.Controllers
 
             return Ok(vehicle);
         }
+
+        [HttpGet("[action]")]
+        [Authorize]
+        public IActionResult MyAds()
+        {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            var user = _cWheelsDbContext.Users.FirstOrDefault(u => u.Email == userEmail);
+            if (user == null)
+                return NotFound();
+
+            var vehicles = from v in _cWheelsDbContext.Vehicles
+                           where v.UserId == user.Id
+                           select new
+                           {
+                               Id = v.Id,
+                               Title = v.Title,
+                               Price = v.Price,
+                               Location = v.Location,
+                               DatePosted = v.DatePosted,
+                               IsFeatured = v.IsFeatured,
+                               ImageUrl = v.Images.FirstOrDefault().ImageUrl
+                           };
+
+            return Ok(vehicles);
+        }
     }
 }
