@@ -54,5 +54,21 @@ namespace CWheelsApi.Controllers
 
             return Ok(new { Id = vehicleObj.Id, message = "Vehicle added" });
         }
+
+        [HttpGet("[action]")]
+        [Authorize]
+        public IActionResult HotAndNewAdds()
+        {
+            var vehicles = from v in _cWheelsDbContext.Vehicles
+                           where v.IsHotAndNew == true
+                           select new
+                           {
+                               Id = v.Id,
+                               Title = v.Title,
+                               ImageUrl = v.Images.FirstOrDefault().ImageUrl
+                           };
+
+            return Ok(vehicles);
+        }
     }
 }
