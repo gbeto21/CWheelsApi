@@ -70,5 +70,20 @@ namespace CWheelsApi.Controllers
 
             return Ok(vehicles);
         }
+
+        [HttpGet("[action]")]
+        [Authorize]
+        public IActionResult SearchVehicles(string search)
+        {
+            var vehicles = from v in _cWheelsDbContext.Vehicles
+                           where v.Title.StartsWith(search)
+                           select new
+                           {
+                               Id = v.Id,
+                               Title = v.Title,
+                           };
+
+            return Ok(vehicles);
+        }
     }
 }
