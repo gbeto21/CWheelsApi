@@ -85,5 +85,25 @@ namespace CWheelsApi.Controllers
 
             return Ok(vehicles);
         }
+
+        [HttpGet]
+        [Authorize]
+        public IActionResult GetVehicles(int categoryId)
+        {
+            var vehicles = from v in _cWheelsDbContext.Vehicles
+                           where v.CategoryId == categoryId
+                           select new
+                           {
+                               Id = v.Id,
+                               Title = v.Title,
+                               Price = v.Price,
+                               Location = v.Location,
+                               DatePosted = v.DatePosted,
+                               IsFeatured = v.IsFeatured,
+                               ImageUrl = v.Images.FirstOrDefault().ImageUrl
+                           };
+
+            return Ok(vehicles);
+        }
     }
 }
