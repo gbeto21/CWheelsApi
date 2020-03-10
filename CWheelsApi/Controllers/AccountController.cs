@@ -7,6 +7,7 @@ using CWheelsApi.DataBase;
 using CWheelsApi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 
 namespace CWheelsApi.Controllers
 {
@@ -16,9 +17,14 @@ namespace CWheelsApi.Controllers
     {
         private CWheelsDbContext _cWheelsDbContext;
 
-        public AccountController(CWheelsDbContext cWheelsDbContext)
+        private IConfiguration _configuration;
+        private readonly AuthService _auth;
+
+        public AccountController(IConfiguration configuration, CWheelsDbContext cWheelsDbContext)
         {
             _cWheelsDbContext = cWheelsDbContext;
+            _configuration = configuration;
+            _auth = new AuthService(_configuration);
         }
 
         [HttpPost]
