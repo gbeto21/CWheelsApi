@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AuthenticationPlugin;
 using CWheelsApi.DataBase;
 using CWheelsApi.Models;
+using ImageUploader;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -111,6 +113,31 @@ namespace CWheelsApi.Controllers
             _cWheelsDbContext.SaveChanges();
 
             return Ok("Your phone has been updated");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult EditUserProfile([FromBody]byte[] ImageArray)
+        {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            var user = _cWheelsDbContext.Users.FirstOrDefault(u => u.Email == userEmail);
+            if (user == null)
+                return NotFound();
+
+            var stream = new MemoryStream(ImageArray);
+            var guid = Guid.NewGuid().ToString();
+            var file = $"{guid}.jpg";
+            var folder = "wwwroot";
+            var response = FilesHelper.UploadImage(stream, folder, file);
+            if (response == false)
+                return BadRequest();
+
+            else
+            {
+                user.ImageUrl = file;
+                _cWheelsDbContext.SaveChanges();
+                return StatusCode(StatusCodes.Status201Created);
+            }
         }
     }
 }
