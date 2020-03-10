@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using AuthenticationPlugin;
 using CWheelsApi.DataBase;
 using CWheelsApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -79,5 +80,22 @@ namespace CWheelsApi.Controllers
 
         }
 
+        [HttpPost]
+        [Authorize]
+        public IActionResult ChangePassword([FromBody]ChangePasswordModel changePasswordModel)
+        {
+            var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+            var user = _cWheelsDbContext.Users.FirstOrDefault(u => u.Email == userEmail);
+            if (user == null)
+                return NotFound();
+
+            if (SecurePasswordHasherHelper.Verify(changePasswordModel.OldPassword, user.Password) == false)
+                return Unauthorized("Sorry you can't change the password");
+
+            user.Password = SecurePasswordHasherHelper.Hash(changePasswordModel.NewPassword);
+            _cWheelsDbContext.SaveChanges();
+            
+            return Ok("Your password has been changed");
+        }
     }
 }
