@@ -105,5 +105,38 @@ namespace CWheelsApi.Controllers
 
             return Ok(vehicles);
         }
+
+        [HttpGet("[action]")]
+        public IActionResult VehicleDetails(int id)
+        {
+            var foundVehicle = _cWheelsDbContext.Vehicles.Find(id);
+            if (foundVehicle == null)
+                return NoContent();
+
+            var vehicle = from v in _cWheelsDbContext.Vehicles
+                          join u in _cWheelsDbContext.Users on v.UserId equals u.Id
+                          where v.Id == id
+                          select new
+                          {
+                              Id = v.Id,
+                              Title = v.Title,
+                              Description = v.Description,
+                              Price = v.Price,
+                              Model = v.Model,
+                              Engine = v.Engine,
+                              Color = v.Color,
+                              Company = v.Company,
+                              DatePosted = v.DatePosted,
+                              //Condition = v.Condition,
+                              Location = v.Location,
+                              Images = v.Images,
+                              Email = u.Email,
+                              Phone = u.Phone,
+                              ImageUrl = u.ImageUrl
+
+                          };
+
+            return Ok(vehicle);
+        }
     }
 }

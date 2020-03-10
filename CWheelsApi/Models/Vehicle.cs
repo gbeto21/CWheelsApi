@@ -37,6 +37,7 @@ namespace CWheelsApi.Models
 
         public string Location { get; set; }
 
+        //public string Condition { get; set; }
 
         public int UserId { get; set; }
 
